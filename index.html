@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="UDACITY Google Map API">
+    <meta name="author" content="Igor Dagayev">
+
+    <title>UDACITY Google Map API</title>
+
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- List -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-nav-title"><p>Anchor Points List</p></div>
+            <div class="sidebar-nav-title">
+              <input type='text' name='filter' data-bind='value:filter'>
+              <button data-bind='click: filterMarkersOut'>Filter</button>
+            </div>
+            <ul data-bind='foreach: location' class="sidebar-nav">
+              <li class="sidebar-brand" data-bind='visible: $parent.isVisible($data)'><a href="#" data-bind='text:title, click: $parent.clickOnLabel'></a></li>
+            </ul>
+        </div>
+
+        <!-- Page Content -->
+        <div id="map"></div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Google MAP API -->
+    <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSRXP5_YYoOQ0pEgOAyDeAS-0wuFTMaRU&v=3&callback=initMap"></script>
+
+    <!-- Knockout -->
+    <script src="js/knockout-3.4.1.js"></script>
+
+    <script src="js/map.js"></script>
+</body>
+</html>
