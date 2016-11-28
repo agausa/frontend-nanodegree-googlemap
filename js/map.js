@@ -46,7 +46,8 @@ function initMap() {
       title:title
     });
 
-    markers.push(marker);
+    //markers.push(marker);
+    gLocations[i].marker = marker;
 
     // add link between marker and info window
     marker.addListener('click', function(){
@@ -98,7 +99,6 @@ function populateInfoWindow(marker, infoWnd){
     // do ajax calls to Flickr
     var flickrRequest = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=28509bf1133dda4d52f3dd7502edfba3&tags=' +
      marker.title + '&lat=' + marker.position.lat() + '&lon=' + marker.position.lng() + '&format=json&nojsoncallback=1';
-     //alert(flickrRequest);
     $.getJSON(flickrRequest, function(result){
       if(result.stat == 'ok'){
         // get an image
@@ -116,7 +116,6 @@ function populateInfoWindow(marker, infoWnd){
              }
 
              if(url != null){ // we have good image
-               // alert(url);
                // replace content with actual image
                infoWnd.setContent('<div>' + marker.title + '</div>' + '<div><img width = 320 src="'+ url +'"></div>');
              }
@@ -139,58 +138,34 @@ function populateInfoWindow(marker, infoWnd){
   }
 }
 
-//__________________________________________ filterMarkersOut _____________________________________
-
-function filterMarkersOut(filter, map){
-  var ulAnchorage = document.getElementById('anchorageList');
-
-  // clean the list first
-  $(ulAnchorage).children().remove();
-
-  var lowCaseFilter = filter.toLowerCase();
-  // populate list and markers
-  for(var i = 0; i < markers.length; i++){
-    var marker = markers[i];
-    var title = marker.title;
-    var lowCaseTitle = title.toLowerCase();
-    if(lowCaseTitle.indexOf(lowCaseFilter) != -1){
-      // populate list view
-      var liAnchor = $("<li>", {"class":"sidebar-brand"}).append($("<a>", {text:title}));
-      liAnchor.click({name:title}, onLabel);
-      $(ulAnchorage).append(liAnchor);
-
-      marker.setMap(map); // show marker
-    }
-    else {
-      marker.setMap(null); // hide marker
-    }
-  }
-}
-
 // Let's do Knockout portion
-
 function ListViewModel(){
   var self = this;
 
-  self.filter = '';
+  self.filter = ko.observable('');
 
   self.isVisible = function(that){
-    var lowCaseFilter = self.filter.toLowerCase();
-    var lowCaseTitle = that.title.toLowerCase();
-    if(lowCaseTitle.indexOf(lowCaseFilter) >= 0)
-      return true;
+    if (self.filter()) {
+      var lowCaseFilter = self.filter().toLowerCase();
+      var lowCaseTitle = that.title.toLowerCase();
+      if(lowCaseTitle.indexOf(lowCaseFilter) >= 0){
+        that.marker.setMap(map);
+        return true;
+      }
 
-    return false;
+      that.marker.setMap(null);
+      return false;
+    }
+    else{
+      if (that.marker)
+        that.marker.setMap(map);
+      return true;
+    }
   };
 
-  self.clickOnLabel = function(){
-    // search in markers
-    for(var i = 0; i < markers.length; i++){
-      var marker = markers[i];
-      if(marker.title == this.title){
-        toggleMarker(marker);
-      }
-    }
+  self.clickOnLabel = function(location){
+    toggleMarker(location.marker);
+    //google.maps.event.trigger(location.marker,'click'); // *******  add Google Maps trigger method ******
   };
 
   self.toggleMarker = function(marker){

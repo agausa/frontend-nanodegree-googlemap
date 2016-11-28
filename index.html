@@ -20,8 +20,7 @@
         <div id="sidebar-wrapper">
             <div class="sidebar-nav-title"><p>Anchor Points List</p></div>
             <div class="sidebar-nav-title">
-              <input type='text' name='filter' data-bind='value:filter'>
-              <button data-bind='click: filterMarkersOut'>Filter</button>
+              <input type='text' name='filter' data-bind='textInput:filter'>
             </div>
             <ul data-bind='foreach: location' class="sidebar-nav">
               <li class="sidebar-brand" data-bind='visible: $parent.isVisible($data)'><a href="#" data-bind='text:title, click: $parent.clickOnLabel'></a></li>
@@ -32,6 +31,10 @@
         <div id="map"></div>
     </div>
 
+    <!-- Knockout -->
+    <script src="js/knockout-3.4.1.js"></script>
+    <script src="js/map.js"></script>
+
     <!-- jQuery -->
     <script src="js/jquery.min.js"></script>
 
@@ -41,9 +44,5 @@
     <!-- Google MAP API -->
     <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSRXP5_YYoOQ0pEgOAyDeAS-0wuFTMaRU&v=3&callback=initMap"></script>
 
-    <!-- Knockout -->
-    <script src="js/knockout-3.4.1.js"></script>
-
-    <script src="js/map.js"></script>
 </body>
 </html>
