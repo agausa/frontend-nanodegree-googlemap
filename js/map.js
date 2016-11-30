@@ -1,6 +1,7 @@
 var map;
 var markers = [];
 var prevMarker = null;
+var infoWindow;
 
 // add location
 var gLocations = [
@@ -14,6 +15,12 @@ var gLocations = [
   {title: 'Cruz Bay', location: {lat:18.3310, lng:-64.7980}}
 ];
 
+//__________________________________________ onErrorGoogleAPI _____________________________________
+
+function onErrorGoogleAPI(){
+  alert('Error: Not able to load Google MAP API script!');
+}
+
 //__________________________________________ initMap ______________________________________________
 
 function initMap() {
@@ -25,7 +32,7 @@ function initMap() {
   });
 
   // add info window
-  var infoWindow = new google.maps.InfoWindow({
+  infoWindow = new google.maps.InfoWindow({
     content:'Title Placeholder'
   });
 
@@ -46,7 +53,7 @@ function initMap() {
       title:title
     });
 
-    //markers.push(marker);
+    markers.push(marker);
     gLocations[i].marker = marker;
 
     // add link between marker and info window
@@ -55,6 +62,12 @@ function initMap() {
       toggleMarker(this);
     });
   }
+
+  // add listener to menu button
+  $('#buttonShowMenu').click(function(){
+    $("#wrapper").toggleClass("toggled");
+    $("#menuButton").toggleClass("toggled");
+  });
 }
 
 //__________________________________________ toggleMarker _________________________________________
@@ -149,23 +162,23 @@ function ListViewModel(){
       var lowCaseFilter = self.filter().toLowerCase();
       var lowCaseTitle = that.title.toLowerCase();
       if(lowCaseTitle.indexOf(lowCaseFilter) >= 0){
-        that.marker.setMap(map);
+        that.marker.setVisible(true);
         return true;
       }
 
-      that.marker.setMap(null);
+      that.marker.setVisible(false);
       return false;
     }
     else{
       if (that.marker)
-        that.marker.setMap(map);
+        that.marker.setVisible(true);
       return true;
     }
   };
 
   self.clickOnLabel = function(location){
     toggleMarker(location.marker);
-    //google.maps.event.trigger(location.marker,'click'); // *******  add Google Maps trigger method ******
+    google.maps.event.trigger(location.marker,'click'); // *******  add Google Maps trigger method ******
   };
 
   self.toggleMarker = function(marker){
