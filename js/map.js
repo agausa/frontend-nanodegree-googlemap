@@ -77,6 +77,9 @@ function toggleMarker(marker){
     prevMarker.setAnimation(null);
 
   marker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function(){
+    marker.setAnimation(null);
+  }, 750); // should bounve once
   prevMarker = marker;
 }
 

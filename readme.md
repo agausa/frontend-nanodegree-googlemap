@@ -4,6 +4,10 @@ The goal of the project is to create a sample page, using Google Map API and sho
 Add functionality using third-party APIs to provide information when a map marker been selected. Filter out the markers and
 list of points.
 
+#### Run instructions
+
+- Download the project
+- Open index.html in browser
 
 #### Usage
 
